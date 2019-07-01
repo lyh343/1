@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: config-server
+    #激活本地配置文件   注释下面的git   默认使用git 但是git太慢 配置了本地配置
+  profiles:
+    active: native  
+    #本地路径默认：[classpath:/, classpath:/config, file:./, file:./config]
+    #下面是默认配置，可以不配置
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/lyh343/1
+#          searchPaths: sp-config
+          #私有库时要添加密码账号
+          #username: your-username
+          #password: your-password
+    
+server:
+  port: 6001
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:2001/eureka, http://eureka2:2002/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
